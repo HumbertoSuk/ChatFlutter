@@ -27,18 +27,61 @@ class _ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+    return Container(
+      // Establece el fondo con un gradiente lineal negro semi-transparente
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color.fromARGB(221, 107, 5, 99),
+            Color.fromARGB(255, 117, 29, 151)
+          ],
+        ),
+      ),
+      // Asegura que el contenido no se superponga con el área segura del dispositivo
+      child: SafeArea(
         child: Column(
           children: [
             Expanded(
-              child: Container(
-                color: Colors.red,
+              // Muestra una lista de mensajes simulados
+              child: ListView.builder(
+                itemCount: 3, // Ejemplo: 3 mensajes
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text('Mensaje $index'),
+                    subtitle: Text('Usuario'),
+                  );
+                },
               ),
             ),
-            const Text("hola"),
-            const Text("Hola11"),
+            // Agrega un campo de texto para escribir mensajes y un botón para enviarlos
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Escribe un mensaje...',
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 83, 77, 77),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8.0),
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () {
+                      // Lógica para enviar el mensaje
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
