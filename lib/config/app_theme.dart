@@ -24,10 +24,10 @@ const List<Color> _colorThemes = [
   _customColor,
 ];
 
-class Apptheme {
+class AppTheme {
   final int selectedColor;
 
-  Apptheme({required this.selectedColor})
+  AppTheme({required this.selectedColor})
       : assert(selectedColor >= 0 && selectedColor < _colorThemes.length,
             'El valor seleccionado debe estar dentro del rango de 0 a ${_colorThemes.length - 1}');
 
