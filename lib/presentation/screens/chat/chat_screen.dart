@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practica2/presentation/widgets/my_bubble_message.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -14,10 +15,30 @@ class ChatScreen extends StatelessWidget {
                 'https://media.sitioandino.com.ar/p/4578cbddd80d3fa57fd632a8c82fa24a/adjuntos/335/imagenes/000/643/0000643063/790x0/smart/netflix.jpg'),
           ),
         ),
-        title: const Text("behh"),
+        title: const Text("chat gosling"),
         centerTitle: false,
       ),
       body: _ChatView(),
+    );
+  }
+}
+
+class MyMessageBubble extends StatelessWidget {
+  const MyMessageBubble({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Container(
+          decoration: BoxDecoration(color: Colors.purple),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const Text("Behhh"),
+          ),
+        )
+      ],
     );
   }
 }
@@ -41,48 +62,20 @@ class _ChatView extends StatelessWidget {
       ),
       // Asegura que el contenido no se superponga con el área segura del dispositivo
       child: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              // Muestra una lista de mensajes simulados
-              child: ListView.builder(
-                itemCount: 3, // Ejemplo: 3 mensajes
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('Mensaje $index'),
-                    subtitle: Text('Usuario'),
-                  );
-                },
-              ),
-            ),
-            // Agrega un campo de texto para escribir mensajes y un botón para enviarlos
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Escribe un mensaje...',
-                        filled: true,
-                        fillColor: Color.fromARGB(255, 83, 77, 77),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8.0),
-                  IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: () {
-                      // Lógica para enviar el mensaje
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: ((context, index) {
+                    return MyMessageBubble();
+                  }),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
