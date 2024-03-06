@@ -83,14 +83,25 @@ class _ImageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context);
+    final size = MediaQuery.of(context).size;
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
-          "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTFwcGp4bDFlN3k0cGc0cjE1Ym1mbGw1Y3lydG5na2V5Y3RiM2g3aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gHuFuI2X2jhS0/giphy.gif",
-          width: size.size.width - 0.7,
-          height: 200,
-          fit: BoxFit.cover),
+        "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTFwcGp4bDFlN3k0cGc0cjE1Ym1mbGw1Y3lydG5na2V5Y3RiM2g3aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gHuFuI2X2jhS0/giphy.gif",
+        width: size.width - 0.7,
+        height: 200,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) =>
+            (loadingProgress == null)
+                ? child
+                : Container(
+                    width: size.width - 0.7,
+                    height: 200,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: const Text("Cargando imagen..."),
+                  ),
+      ),
     );
   }
 }
