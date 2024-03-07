@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:practica2/presentation/widgets/my_message_bubble.dart';
 import 'package:practica2/presentation/widgets/received_message.dart';
+import 'package:practica2/presentation/widgets/shared/message_field_box.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -44,23 +45,19 @@ class _ChatView extends StatelessWidget {
       ),
       // Asegura que el contenido no se superponga con el área segura del dispositivo
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 40,
-                  itemBuilder: ((context, index) {
-                    return index % 2 == 0
-                        ? MyMessageBubble()
-                        : ReceivedMessage();
-                  }),
-                ),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: 40,
+                itemBuilder: ((context, index) {
+                  return index % 2 == 0 ? MyMessageBubble() : ReceivedMessage();
+                }),
               ),
-              const SizedBox(height: 30),
-            ],
-          ),
+            ),
+            const SizedBox(height: 30),
+            const MessagefieldBox(),
+          ],
         ),
       ),
     );
