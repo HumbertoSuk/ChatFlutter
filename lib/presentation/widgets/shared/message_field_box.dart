@@ -5,44 +5,68 @@ class MessageFieldBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textcontroler = TextEditingController();
-    final focus = FocusNode();
+    final textController = TextEditingController();
+    final enfoque = FocusNode();
 
     final UnderlineInputBorder outLineInputBorder = UnderlineInputBorder(
         borderSide: const BorderSide(color: Colors.transparent),
         borderRadius: BorderRadius.circular(20));
 
     final decoration = InputDecoration(
+        hintText: 'ingresa texto',
         enabledBorder: outLineInputBorder,
         focusedBorder: outLineInputBorder,
         filled: true,
         suffixIcon: IconButton(
           icon: const Icon(Icons.send),
           onPressed: () {
-            final text = textcontroler.value.text;
-            print("boton de envio $text");
-            textcontroler.clear();
+            final textValue = textController.value.text;
+            print('impresion de envio: $textValue');
+            textController.clear();
           },
         ));
-    //decoration: decoration
+
+    // return TextFormField(decoration: decoration);
     return TextFormField(
-        decoration: decoration,
-        controller: textcontroler,
-        focusNode: focus,
+        controller: textController,
+        focusNode: enfoque,
         onFieldSubmitted: (value) {
-          print("sudmit:  $value");
-          textcontroler.clear();
-          focus.requestFocus();
-        });
+          print('valor de submit: $value');
+          textController.clear();
+          enfoque.requestFocus();
+        },
+        onTapOutside: (event) {
+          enfoque.unfocus();
+        },
+        decoration: setDecoration(
+            inputBorder: OutLineInputBorder(),
+            onPressed: () => onPressed2(textController: textController)));
   }
 
-  UnderlineInputBorder outLineInputBorder() => UnderlineInputBorder(
+  UnderlineInputBorder OutLineInputBorder() => UnderlineInputBorder(
       borderSide: const BorderSide(color: Colors.transparent),
       borderRadius: BorderRadius.circular(20));
 
-  InputDecoration setDecoration({required InputBorder}) => InputBorder(
-      enabledBorder: outLineInputBorder,
-      focusedBorder: outLineInputBorder,
-      filled: true,
-      suffixIcon: IconButton(icon: const Icon(Icons.send), onPressed: () {}));
+  InputDecoration setDecoration(
+          {required inputBorder, required void Function() onPressed}) =>
+      InputDecoration(
+          enabledBorder: inputBorder,
+          focusedBorder: inputBorder,
+          filled: true,
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.send_and_archive_outlined),
+            onPressed: onPressed,
+          ));
+
+  onPress({required TextEditingController textController}) {
+    final textValue = textController.value.text;
+    print('impresion dle boton de envio: $textValue');
+    textController.clear();
+  }
+
+  onPressed2({required TextEditingController textController}) {
+    final textValue = textController.value.text;
+    print('impresión de la nueva función: $textValue');
+    textController.clear();
+  }
 }
