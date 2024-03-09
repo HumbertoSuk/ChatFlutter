@@ -54,7 +54,7 @@ class MessageFieldBox extends StatelessWidget {
           focusedBorder: inputBorder,
           filled: true,
           suffixIcon: IconButton(
-            icon: const Icon(Icons.send_and_archive_outlined),
+            icon: const Icon(Icons.send),
             onPressed: onPressed,
           ));
 

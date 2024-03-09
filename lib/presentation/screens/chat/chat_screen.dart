@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:practica2/presentation/domain/entities/message.dart';
+import 'package:practica2/presentation/providers/chat_provider.dart';
 import 'package:practica2/presentation/widgets/my_message_bubble.dart';
 import 'package:practica2/presentation/widgets/received_message.dart';
 import 'package:practica2/presentation/widgets/shared/message_field_box.dart';
+import 'package:practica2/presentation/domain/entities/message.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -11,17 +15,18 @@ class ChatScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const Padding(
-          padding: EdgeInsets.all(1),
+          padding: EdgeInsets.all(5),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
               'https://media.sitioandino.com.ar/p/4578cbddd80d3fa57fd632a8c82fa24a/adjuntos/335/imagenes/000/643/0000643063/790x0/smart/netflix.jpg',
             ),
           ),
         ),
-        title: const Text("chat gosling"),
+        title: const Text("Ryan Gosling (>//w//<)<3"),
         centerTitle: false,
+        backgroundColor: const Color.fromARGB(255, 63, 4, 73),
       ),
-      body: _ChatView(),
+      body: const _ChatView(),
     );
   }
 }
@@ -31,27 +36,22 @@ class _ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // Establece el fondo con un gradiente lineal negro semi-transparente
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color.fromARGB(221, 107, 5, 99),
-            Color.fromARGB(255, 117, 29, 151),
-          ],
-        ),
-      ),
-      // Asegura que el contenido no se superponga con el área segura del dispositivo
-      child: SafeArea(
+    final ChatProvider chatProvider = context.watch<ChatProvider>();
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: 40,
+                itemCount: chatProvider.messageList.length,
                 itemBuilder: ((context, index) {
-                  return index % 2 == 0 ? MyMessageBubble() : ReceivedMessage();
+                  print(chatProvider.messageList[index].text);
+                  return (chatProvider.messageList[index].fromWho ==
+                          FromWho.hers)
+                      ? const ReceivedMessage()
+                      : MyMessageBubble(
+                          message: chatProvider.messageList[index].text);
                 }),
               ),
             ),
