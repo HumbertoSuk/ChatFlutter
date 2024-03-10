@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practica2/config/app_theme.dart';
+import 'package:practica2/config/theme/app_theme.dart';
 import 'package:practica2/presentation/providers/chat_provider.dart';
 import 'package:practica2/presentation/screens/chat/chat_screen.dart';
 import 'package:provider/provider.dart';

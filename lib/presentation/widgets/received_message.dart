@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ReceivedMessage extends StatefulWidget {
+  final String message; // Agregamos un parámetro para el mensaje recibido
+  final String? gifUrl; // Agregamos un parámetro opcional para la URL del GIF
+
   const ReceivedMessage({
     Key? key,
+    required this.message, // Asignamos el mensaje recibido al parámetro
+    this.gifUrl, // Asignamos la URL del GIF al parámetro opcional
   }) : super(key: key);
 
   @override
@@ -34,6 +39,8 @@ class _ReceivedMessageState extends State<ReceivedMessage>
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final message = widget.message;
+
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
@@ -61,14 +68,13 @@ class _ReceivedMessageState extends State<ReceivedMessage>
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: Text(
-                      "Si, es un mundo enfermo y triste...",
+                      message,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
-                // Aquí agregamos la clase _ImageBubble con el GIF proporcionado
-                _ImageBubble(),
+                _ImageBubble(gifUrl: widget.gifUrl),
               ],
             ),
           ),
@@ -79,29 +85,35 @@ class _ReceivedMessageState extends State<ReceivedMessage>
 }
 
 class _ImageBubble extends StatelessWidget {
-  const _ImageBubble({Key? key}) : super(key: key);
+  final String? gifUrl;
+
+  const _ImageBubble({Key? key, this.gifUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Image.network(
-        "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTFwcGp4bDFlN3k0cGc0cjE1Ym1mbGw1Y3lydG5na2V5Y3RiM2g3aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gHuFuI2X2jhS0/giphy.gif",
-        width: size.width * 0.65,
-        height: size.height * 0.2,
-        fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) =>
-            (loadingProgress == null)
-                ? child
-                : Container(
-                    width: size.width * 0.65,
-                    height: size.height * 0.2,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: const Text("Cargando imagen..."),
-                  ),
-      ),
-    );
+    if (gifUrl != null) {
+      final size = MediaQuery.of(context).size;
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.network(
+          gifUrl!,
+          width: size.width * 0.65,
+          height: size.height * 0.2,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) =>
+              (loadingProgress == null)
+                  ? child
+                  : Container(
+                      width: size.width * 0.65,
+                      height: size.height * 0.2,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: const Text("Cargando imagen..."),
+                    ),
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }

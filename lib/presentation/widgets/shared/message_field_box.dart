@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:practica2/presentation/providers/chat_provider.dart';
+import 'package:provider/provider.dart';
 
 class MessageFieldBox extends StatelessWidget {
-  const MessageFieldBox({super.key});
+  const MessageFieldBox({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,64 +11,41 @@ class MessageFieldBox extends StatelessWidget {
     final enfoque = FocusNode();
 
     final UnderlineInputBorder outLineInputBorder = UnderlineInputBorder(
-        borderSide: const BorderSide(color: Colors.transparent),
-        borderRadius: BorderRadius.circular(20));
+      borderSide: const BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.circular(20),
+    );
 
     final decoration = InputDecoration(
-        hintText: 'ingresa texto',
-        enabledBorder: outLineInputBorder,
-        focusedBorder: outLineInputBorder,
-        filled: true,
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.send),
-          onPressed: () {
-            final textValue = textController.value.text;
-            print('impresion de envio: $textValue');
+      hintText: 'Ingresa texto',
+      enabledBorder: outLineInputBorder,
+      focusedBorder: outLineInputBorder,
+      filled: true,
+      suffixIcon: IconButton(
+        icon: const Icon(Icons.send),
+        onPressed: () {
+          final textValue = textController.value.text;
+          if (textValue.isNotEmpty) {
+            final chatProvider =
+                Provider.of<ChatProvider>(context, listen: false);
+            chatProvider.sendMessage(textValue);
             textController.clear();
-          },
-        ));
+          }
+        },
+      ),
+    );
 
-    // return TextFormField(decoration: decoration);
     return TextFormField(
-        controller: textController,
-        focusNode: enfoque,
-        onFieldSubmitted: (value) {
-          print('valor de submit: $value');
-          textController.clear();
-          enfoque.requestFocus();
-        },
-        onTapOutside: (event) {
-          enfoque.unfocus();
-        },
-        decoration: setDecoration(
-            inputBorder: OutLineInputBorder(),
-            onPressed: () => onPressed2(textController: textController)));
-  }
-
-  UnderlineInputBorder OutLineInputBorder() => UnderlineInputBorder(
-      borderSide: const BorderSide(color: Colors.transparent),
-      borderRadius: BorderRadius.circular(20));
-
-  InputDecoration setDecoration(
-          {required inputBorder, required void Function() onPressed}) =>
-      InputDecoration(
-          enabledBorder: inputBorder,
-          focusedBorder: inputBorder,
-          filled: true,
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: onPressed,
-          ));
-
-  onPress({required TextEditingController textController}) {
-    final textValue = textController.value.text;
-    print('impresion dle boton de envio: $textValue');
-    textController.clear();
-  }
-
-  onPressed2({required TextEditingController textController}) {
-    final textValue = textController.value.text;
-    print('impresión de la nueva función: $textValue');
-    textController.clear();
+      controller: textController,
+      focusNode: enfoque,
+      onFieldSubmitted: (value) {
+        print('valor de submit: $value');
+        textController.clear();
+        enfoque.requestFocus();
+      },
+      onTapOutside: (event) {
+        enfoque.unfocus();
+      },
+      decoration: decoration,
+    );
   }
 }

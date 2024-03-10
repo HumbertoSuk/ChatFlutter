@@ -4,7 +4,6 @@ import 'package:practica2/presentation/providers/chat_provider.dart';
 import 'package:practica2/presentation/widgets/my_message_bubble.dart';
 import 'package:practica2/presentation/widgets/received_message.dart';
 import 'package:practica2/presentation/widgets/shared/message_field_box.dart';
-import 'package:practica2/presentation/domain/entities/message.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -22,43 +21,30 @@ class ChatScreen extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text("Ryan Gosling (>//w//<)<3"),
+        title: const Text("Ryan Gosling (>//w//<) <3"),
         centerTitle: false,
         backgroundColor: const Color.fromARGB(255, 63, 4, 73),
       ),
-      body: const _ChatView(),
-    );
-  }
-}
-
-class _ChatView extends StatelessWidget {
-  const _ChatView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ChatProvider chatProvider = context.watch<ChatProvider>();
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: chatProvider.messageList.length,
-                itemBuilder: ((context, index) {
-                  print(chatProvider.messageList[index].text);
-                  return (chatProvider.messageList[index].fromWho ==
-                          FromWho.hers)
-                      ? const ReceivedMessage()
-                      : MyMessageBubble(
-                          message: chatProvider.messageList[index].text);
-                }),
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Consumer<ChatProvider>(
+              builder: (context, chatProvider, _) {
+                return ListView.builder(
+                  itemCount: chatProvider.messageList.length,
+                  itemBuilder: (context, index) {
+                    final message = chatProvider.messageList[index];
+                    return message.fromWho == FromWho.me
+                        ? MyMessageBubble(message: message.text)
+                        : ReceivedMessage(
+                            message: message.text, gifUrl: message.imageUrl);
+                  },
+                );
+              },
             ),
-            const SizedBox(height: 30),
-            const MessageFieldBox(),
-          ],
-        ),
+          ),
+          MessageFieldBox(),
+        ],
       ),
     );
   }
