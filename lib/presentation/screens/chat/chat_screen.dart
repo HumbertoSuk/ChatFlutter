@@ -11,6 +11,7 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ChatProvider chatProvider = context.watch<ChatProvider>();
     return Scaffold(
       appBar: AppBar(
         leading: const Padding(
@@ -33,17 +34,22 @@ class ChatScreen extends StatelessWidget {
                 return ListView.builder(
                   itemCount: chatProvider.messageList.length,
                   itemBuilder: (context, index) {
-                    final message = chatProvider.messageList[index];
-                    return message.fromWho == FromWho.me
-                        ? MyMessageBubble(message: message.text)
-                        : ReceivedMessage(
-                            message: message.text, gifUrl: message.imageUrl);
+                    return (chatProvider.messageList[index].fromWho ==
+                            FromWho.hers)
+                        ? ReceivedMessage(
+                            message: chatProvider.messageList[index].text,
+                            gifUrl: chatProvider.messageList[index].imageURl,
+                          )
+                        : MyMessageBubble(
+                            message: chatProvider.messageList[index].text);
                   },
                 );
               },
             ),
           ),
-          MessageFieldBox(),
+          MessageFieldBox(
+            onValue: (value) => chatProvider.sendMessage(value),
+          ),
         ],
       ),
     );

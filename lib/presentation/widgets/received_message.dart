@@ -11,13 +11,16 @@ class ReceivedMessage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ReceivedMessageState createState() => _ReceivedMessageState();
+  _ReceivedMessageState createState() => _ReceivedMessageState(gifUrl: gifUrl);
 }
 
 class _ReceivedMessageState extends State<ReceivedMessage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  final String? gifUrl;
+
+  _ReceivedMessageState({this.gifUrl});
 
   @override
   void initState() {
@@ -74,7 +77,7 @@ class _ReceivedMessageState extends State<ReceivedMessage>
                   ),
                 ),
                 const SizedBox(height: 20),
-                _ImageBubble(gifUrl: widget.gifUrl),
+                _ImageBubble(gifUrl: gifUrl),
               ],
             ),
           ),
