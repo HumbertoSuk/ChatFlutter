@@ -11,11 +11,10 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatProvider chatProvider = context.watch<ChatProvider>();
     return Scaffold(
       appBar: AppBar(
-        leading: const Padding(
-          padding: EdgeInsets.all(5),
+        leading: Padding(
+          padding: const EdgeInsets.all(5),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
               'https://media.sitioandino.com.ar/p/4578cbddd80d3fa57fd632a8c82fa24a/adjuntos/335/imagenes/000/643/0000643063/790x0/smart/netflix.jpg',
@@ -26,12 +25,24 @@ class ChatScreen extends StatelessWidget {
         centerTitle: false,
         backgroundColor: const Color.fromARGB(255, 63, 4, 73),
       ),
-      body: Column(
-        children: [
-          Expanded(
+      body: ChatBody(),
+    );
+  }
+}
+
+class ChatBody extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ChatProvider chatProvider = context.watch<ChatProvider>();
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Consumer<ChatProvider>(
               builder: (context, chatProvider, _) {
                 return ListView.builder(
+                  controller: chatProvider.chatController,
                   itemCount: chatProvider.messageList.length,
                   itemBuilder: (context, index) {
                     return (chatProvider.messageList[index].fromWho ==
@@ -47,11 +58,12 @@ class ChatScreen extends StatelessWidget {
               },
             ),
           ),
-          MessageFieldBox(
-            onValue: (value) => chatProvider.sendMessage(value),
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 20),
+        MessageFieldBox(
+          onValue: (value) => chatProvider.sendMessage(value),
+        ),
+      ],
     );
   }
 }

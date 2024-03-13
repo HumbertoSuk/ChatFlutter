@@ -41,9 +41,9 @@ class MessageFieldBox extends StatelessWidget {
         enabledBorder: inputBorder,
         focusedBorder: inputBorder,
         filled: true,
-        hintText: 'Pregunta ?',
+        hintText: 'Haz una pregunta...',
         suffixIcon: IconButton(
-          icon: const Icon(Icons.send_and_archive_outlined),
+          icon: const Icon(Icons.send),
           onPressed: onPressed,
         ),
       );
