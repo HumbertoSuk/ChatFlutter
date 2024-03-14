@@ -13,15 +13,18 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(5),
+        leading: const Padding(
+          padding: EdgeInsets.all(5),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
               'https://media.sitioandino.com.ar/p/4578cbddd80d3fa57fd632a8c82fa24a/adjuntos/335/imagenes/000/643/0000643063/790x0/smart/netflix.jpg',
             ),
           ),
         ),
-        title: const Text("Ryan Gosling (>//w//<) <3"),
+        title: const Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text("Ryan Gosling (>//w//<) <3"),
+        ),
         centerTitle: false,
         backgroundColor: const Color.fromARGB(255, 63, 4, 73),
       ),
@@ -36,6 +39,12 @@ class ChatBody extends StatelessWidget {
     final ChatProvider chatProvider = context.watch<ChatProvider>();
     return Column(
       children: [
+        SizedBox(
+          height: 10,
+          child: Container(
+            color: Colors.transparent,
+          ),
+        ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),

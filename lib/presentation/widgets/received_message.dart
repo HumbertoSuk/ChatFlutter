@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ReceivedMessage extends StatefulWidget {
-  final String message; // Agregamos un parámetro para el mensaje recibido
-  final String? gifUrl; // Agregamos un parámetro opcional para la URL del GIF
+  final String message;
+  final String? gifUrl;
 
   const ReceivedMessage({
     Key? key,
-    required this.message, // Asignamos el mensaje recibido al parámetro
-    this.gifUrl, // Asignamos la URL del GIF al parámetro opcional
+    required this.message,
+    this.gifUrl,
   }) : super(key: key);
 
   @override
@@ -50,7 +50,7 @@ class _ReceivedMessageState extends State<ReceivedMessage>
         return Opacity(
           opacity: _animation.value,
           child: Transform.translate(
-            offset: Offset(0, (1 - _animation.value) * 50),
+            offset: Offset(0, (1 - _animation.value) * 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -76,8 +76,8 @@ class _ReceivedMessageState extends State<ReceivedMessage>
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                _ImageBubble(gifUrl: gifUrl),
+                const SizedBox(height: 10),
+                if (gifUrl != null) _ImageBubble(gifUrl: gifUrl!),
               ],
             ),
           ),
@@ -88,35 +88,38 @@ class _ReceivedMessageState extends State<ReceivedMessage>
 }
 
 class _ImageBubble extends StatelessWidget {
-  final String? gifUrl;
+  final String gifUrl;
 
-  const _ImageBubble({Key? key, this.gifUrl}) : super(key: key);
+  const _ImageBubble({Key? key, required this.gifUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (gifUrl != null) {
-      final size = MediaQuery.of(context).size;
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.network(
-          gifUrl!,
-          width: size.width * 0.65,
-          height: size.height * 0.2,
-          fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) =>
-              (loadingProgress == null)
-                  ? child
-                  : Container(
-                      width: size.width * 0.65,
-                      height: size.height * 0.2,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: const Text("Cargando imagen..."),
+    final size = MediaQuery.of(context).size;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Image.network(
+        gifUrl,
+        width: size.width * 0.5,
+        height: size.height * 0.2,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) =>
+            (loadingProgress == null)
+                ? child
+                : Container(
+                    width: size.width * 0.5,
+                    height: size.height * 0.2,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: const Text(
+                      "Cargando imagen...",
+                      style: TextStyle(color: Colors.white),
                     ),
-        ),
-      );
-    } else {
-      return SizedBox();
-    }
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+      ),
+    );
   }
 }
